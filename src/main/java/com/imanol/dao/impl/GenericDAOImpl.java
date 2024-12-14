@@ -11,8 +11,9 @@ import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 import java.util.List;
+import java.util.Optional;
 
-public class GenericDAOImpl <T,ID> implements GenericDAO<T,ID> {
+public abstract class GenericDAOImpl <T,ID> implements GenericDAO<T,ID> {
     private final Class<T> entityType; // Tipo de la entidad
 
     public GenericDAOImpl(Class<T> entityType) {

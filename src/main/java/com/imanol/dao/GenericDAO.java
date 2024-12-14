@@ -1,6 +1,7 @@
 package com.imanol.dao;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface GenericDAO <T,ID> {
     void save(T entity);            // Guardar una entidad
@@ -10,4 +11,5 @@ public interface GenericDAO <T,ID> {
     void update(T entity);          // Actualizar una entidad
     void delete(T entity);          // Eliminar una entidad
     void deleteById(ID id);         // Eliminar una entidad por el ID
+
 }

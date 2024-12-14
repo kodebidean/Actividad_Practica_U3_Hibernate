@@ -28,7 +28,7 @@ public class Main {
                 System.out.println("Entidad duplicada: " + user1);
             }
 
-// Crear usuario "Imanol"
+            // Crear usuario "Imanol"
             User user2 = userDAO.findByName("Imanol");
             if (user2 == null) {
                 user2 = new User("Imanol");
@@ -77,7 +77,7 @@ public class Main {
             System.out.println(avgSpending);
 
             // Actualizar usuario
-            user1.setName("Sergio Actualizado");
+            user1.setName("Sergio Gutierrez");
             userDAO.update(user1);
             System.out.println("\nUsuario actualizado: " + userDAO.findById(user1.getId()).getName());
 
