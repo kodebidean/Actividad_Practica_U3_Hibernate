@@ -1,0 +1,19 @@
+<configuration>
+
+    <!-- Define un appender para la consola (salida estándar) -->
+    <appender name = "STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Configura el logger para Hibernate -->
+    <logger name="org.hibernate" level="WARN"/>
+
+    <!-- Establece el nivel global de log para la consola -->
+    <root level="INFO">
+        <appender-ref ref="STDOUT"/>
+    </root>
+
+
+</configuration>
