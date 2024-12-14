@@ -18,24 +18,36 @@ public class TicketDAOImpl extends GenericDAOImpl<Ticket, Integer> implements Ti
     @Override
     public List<Ticket> getTicketsByUserId(int userId) {
         try (Session session = HibernateUtil.getSession()) {
-            Query<Ticket> query = session.createQuery("FROM Ticket WHERE user.id = :userId", Ticket.class);
+            String hql = """
+            SELECT t FROM Ticket t 
+            JOIN FETCH t.user 
+            WHERE t.user.id = :userId
+        """;
+            Query<Ticket> query = session.createQuery(hql, Ticket.class);
             query.setParameter("userId", userId);
             return query.list();
         } catch (Exception e) {
-            throw new CustomException("Error al obtener los tickets del usuario con ID: " + userId, e);
+            throw new CustomException("Error al obtener entradas del usuario con ID: " + userId, e);
         }
     }
+
 
     @Override
     public List<Ticket> getTicketsByAttractionName(String attractionName) {
         try (Session session = HibernateUtil.getSession()) {
-            Query<Ticket> query = session.createQuery("FROM Ticket WHERE attractionName = :attractionName", Ticket.class);
+            String hql = """
+            SELECT t FROM Ticket t 
+            JOIN FETCH t.user 
+            WHERE t.attractionName = :attractionName
+        """;
+            Query<Ticket> query = session.createQuery(hql, Ticket.class);
             query.setParameter("attractionName", attractionName);
             return query.list();
         } catch (Exception e) {
-            throw new CustomException("Error al obtener tickets para la atracción: " + attractionName, e);
+            throw new CustomException("Error al obtener entradas para la atracción: " + attractionName, e);
         }
     }
+
 
     @Override
     public Double getAverageSpendingByUserId(int userId) {
@@ -49,4 +61,16 @@ public class TicketDAOImpl extends GenericDAOImpl<Ticket, Integer> implements Ti
             throw new CustomException("Error al calcular el gasto medio del usuario con ID: " + userId, e);
         }
     }
+
+
+    @Override
+    public List<Ticket> findAllWithUsers() {
+        try (Session session = HibernateUtil.getSession()) {
+            String hql = "SELECT t FROM Ticket t JOIN FETCH t.user";
+            return session.createQuery(hql, Ticket.class).list();
+        } catch (Exception e) {
+            throw new CustomException("Error al cargar los tickets con usuarios.", e);
+        }
+    }
+
 }

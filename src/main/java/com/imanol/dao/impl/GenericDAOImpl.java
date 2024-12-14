@@ -2,10 +2,13 @@ package com.imanol.dao.impl;
 
 import com.imanol.exceptions.CustomException;
 import com.imanol.exceptions.ExceptionHandler;
+import com.imanol.models.Ticket;
+import com.imanol.models.User;
 import com.imanol.util.HibernateUtil;
 import com.imanol.dao.GenericDAO;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
 import java.util.List;
 
@@ -16,23 +19,54 @@ public class GenericDAOImpl <T,ID> implements GenericDAO<T,ID> {
         this.entityType = entityType; // Pasar el tipo de entidad/clase al constructor de _DAOImpl
     }
 
-    @Override
-    public void create(T entity) {
-        Session session = null;
-        try {
-            session = HibernateUtil.getSession();
-            session.beginTransaction();
-            session.persist(entity); // Persistimos el objeto en la base de datos
-            session.getTransaction().commit();
-        } catch (Exception e) {
-            if (session != null) session.getTransaction().rollback();
-            throw new CustomException("Error al crear entidad: " + entity.getClass().getSimpleName(), e);
-        } finally {
-            HibernateUtil.closeSession(session);
+    private String getUniqueConstraintCondition(T entity) {
+        if (entity instanceof User) {
+            return "name = :name";
+        } else if (entity instanceof Ticket) {
+            return "attractionName = :name AND user.id = :userId AND price = :price";
+        }
+        throw new IllegalArgumentException("Entidad desconocida para la verificación de duplicados.");
+    }
+
+    private void setUniqueConstraintParameters(Query<T> query, T entity) {
+        if (entity instanceof User user) {
+            query.setParameter("name", user.getName());
+        } else if (entity instanceof Ticket ticket) {
+            query.setParameter("name", ticket.getAttractionName());
+            query.setParameter("userId", ticket.getUser().getId());
+            query.setParameter("price", ticket.getPrice());
+        } else {
+            throw new IllegalArgumentException("Entidad desconocida para la verificación de duplicados.");
         }
     }
 
 
+
+    @Override
+    public void create(T entity) {
+        try (Session session = HibernateUtil.getSession()) {
+            session.beginTransaction();
+
+            // Verificar si ya existe la entidad (basado en algún criterio único)
+            String hql = String.format("FROM %s WHERE %s",
+                    entityType.getSimpleName(),
+                    getUniqueConstraintCondition(entity));
+            Query<T> query = session.createQuery(hql, entityType);
+            setUniqueConstraintParameters(query, entity);
+
+            // Solo crear si no existe
+            if (query.uniqueResult() == null) {
+                session.persist(entity);
+                session.getTransaction().commit();
+                System.out.println("Entidad creada: " + entity);
+            } else {
+                System.out.println("Entidad duplicada: " + entity);
+                session.getTransaction().rollback();
+            }
+        } catch (Exception e) {
+            throw new CustomException("Error al crear la entidad: " + entity, e);
+        }
+    }
 
     @Override
     public void save(T entity) {

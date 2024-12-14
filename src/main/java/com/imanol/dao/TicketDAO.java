@@ -14,4 +14,8 @@ public interface TicketDAO extends GenericDAO <Ticket, Integer> {
     // Calcular el gasto medio de un usuario determinado
     Double getAverageSpendingByUserId(int userId);
 
+    // Obtener todos los tickets con sus usuarios
+    List<Ticket> findAllWithUsers();
+
+
 }

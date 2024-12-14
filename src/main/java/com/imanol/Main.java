@@ -40,9 +40,11 @@ public class Main {
 
             System.out.println("\nTickets creados para cada usuario:");
 
-            // Leer tickets
-            List<Ticket> tickets = ticketDAO.findAll();
-            tickets.forEach(ticket -> System.out.println(ticket.getUser().getName() + ": " + ticket.getAttractionName() + " - " + ticket.getPrice()));
+            // Leer tickets con usuarios cargados
+            List<Ticket> tickets = ticketDAO.findAllWithUsers();
+            tickets.forEach(ticket -> System.out.println(
+                    ticket.getUser().getName() + ": " + ticket.getAttractionName() + " - " + ticket.getPrice()
+            ));
 
             // Consultar entradas de un usuario
             System.out.println("\nEntradas de Sergio:");
@@ -69,7 +71,7 @@ public class Main {
             ticketDAO.deleteById(ticket2.getId());
 
             System.out.println("\nTickets restantes:");
-            tickets = ticketDAO.findAll();
+            tickets = ticketDAO.findAllWithUsers(); // Usar el método que carga los usuarios asociados
             tickets.forEach(ticket -> System.out.println(ticket.getUser().getName() + ": " + ticket.getAttractionName() + " - " + ticket.getPrice()));
 
         } catch (Exception e) {

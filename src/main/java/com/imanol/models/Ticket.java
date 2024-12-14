@@ -1,9 +1,6 @@
 package com.imanol.models;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
-
 import java.math.BigDecimal;
 
 @Entity
@@ -11,9 +8,12 @@ import java.math.BigDecimal;
 public class Ticket {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tickets_id_gen")
+    @SequenceGenerator(name = "tickets_id_gen", sequenceName = "tickets_id_seq", allocationSize = 1)
+    @Column(name = "id", nullable = false)
     private Integer id;
 
+    // Relación Muchos a Uno con User
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
@@ -24,18 +24,18 @@ public class Ticket {
     @Column(name = "price", nullable = false, precision = 10, scale = 2)
     private BigDecimal price;
 
-    // Constructor sin argumentos
+    // Constructor vacío
     public Ticket() {
     }
 
-    // Constructor con parámetros
+    // Constructor con argumentos
     public Ticket(User user, String attractionName, BigDecimal price) {
         this.user = user;
         this.attractionName = attractionName;
         this.price = price;
     }
 
-    // Getters y setters
+    // Getters y Setters
     public Integer getId() {
         return id;
     }

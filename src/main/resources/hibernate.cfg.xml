@@ -15,6 +15,9 @@
     <property name="show_sql">true</property>
     <property name="format_sql">true</property>
 
+    <mapping class="com.imanol.models.User"/>
+    <mapping class="com.imanol.models.Ticket"/>
+
 
   </session-factory>
 </hibernate-configuration>
