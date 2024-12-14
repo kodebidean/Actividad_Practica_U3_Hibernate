@@ -12,7 +12,7 @@ import java.util.List;
 public class TicketDAOImpl extends GenericDAOImpl<Ticket, Integer> implements TicketDAO {
 
     public TicketDAOImpl() {
-        super(Ticket.class); // Pasamos la clase Ticket al constructor de GenericDAOImpl
+        super(Ticket.class); // Pasar clase Ticket al constructor de TicketDAOImpl
     }
 
     @Override

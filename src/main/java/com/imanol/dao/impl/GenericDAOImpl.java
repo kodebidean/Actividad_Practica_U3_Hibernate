@@ -1,5 +1,6 @@
 package com.imanol.dao.impl;
 
+import com.imanol.exceptions.CustomException;
 import com.imanol.util.HibernateUtil;
 import com.imanol.dao.GenericDAO;
 import org.hibernate.Session;
@@ -11,8 +12,25 @@ public class GenericDAOImpl <T,ID> implements GenericDAO<T,ID> {
     private final Class<T> entityType; // Tipo de la entidad
 
     public GenericDAOImpl(Class<T> entityType) {
-        this.entityType = entityType; // Pasamos el tipo de entidad (ej: User.class)
+        this.entityType = entityType; // Pasar el tipo de entidad/clase al constructor de _DAOImpl
     }
+
+    @Override
+    public void create(T entity) {
+        Session session = null;
+        try {
+            session = HibernateUtil.getSession();
+            session.beginTransaction();
+            session.persist(entity); // Persistimos el objeto en la base de datos
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            if (session != null) session.getTransaction().rollback();
+            throw new CustomException("Error al crear entidad: " + entity.getClass().getSimpleName(), e);
+        } finally {
+            HibernateUtil.closeSession(session);
+        }
+    }
+
 
     @Override
     public void save(T entity) {
@@ -40,7 +58,7 @@ public class GenericDAOImpl <T,ID> implements GenericDAO<T,ID> {
     @Override
     public List<T> findAll() {
         try (Session session = HibernateUtil.getSession()) {
-            String hql = "FROM " + entityType.getSimpleName(); // Ej: "FROM User"
+            String hql = "FROM " + entityType.getSimpleName(); // Ejemplo-> "FROM User"
             return session.createQuery(hql, entityType).list();
         } catch (Exception e) {
             System.err.println("Error al listar entidades: " + e.getMessage());
@@ -66,7 +84,7 @@ public class GenericDAOImpl <T,ID> implements GenericDAO<T,ID> {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSession()) {
             transaction = session.beginTransaction();
-            session.remove(entity); // Eliminamos la entidad
+            session.remove(entity); // Eliminamos la entidad/clase
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) transaction.rollback();
