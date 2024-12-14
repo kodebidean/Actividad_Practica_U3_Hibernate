@@ -1,6 +1,7 @@
-package com.imanol.dao;
+package com.imanol.dao.impl;
 
-import com.imanol.HibernateUtil;
+import com.imanol.util.HibernateUtil;
+import com.imanol.dao.GenericDAO;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 

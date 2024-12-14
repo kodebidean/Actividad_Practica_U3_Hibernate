@@ -1,4 +1,4 @@
-package com.imanol;
+package com.imanol.util;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
