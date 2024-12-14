@@ -1,4 +1,4 @@
-package models;
+package com.imanol.models;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
