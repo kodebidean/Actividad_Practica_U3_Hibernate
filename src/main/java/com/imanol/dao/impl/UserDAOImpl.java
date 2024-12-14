@@ -37,4 +37,10 @@ public class UserDAOImpl extends GenericDAOImpl<User, Integer> implements UserDA
             }
         }
     }
+
+    @Override
+    public User findByName(String name) {
+        return super.findByName(name); // Reutiliza el método del genérico
+    }
+
 }

@@ -7,5 +7,5 @@ import java.util.List;
 public interface UserDAO extends GenericDAO<User, Integer> {
     // Obtener todos los tickets de un usuario
     List<Object[]> getAllTicketsByUserId(int userId);
-
+    User findByName(String name);
 }

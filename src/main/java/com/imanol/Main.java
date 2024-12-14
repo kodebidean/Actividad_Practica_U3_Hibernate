@@ -18,10 +18,25 @@ public class Main {
 
         try {
             // Crear usuarios
-            User user1 = new User("Sergio");
-            User user2 = new User("Imanol");
-            userDAO.create(user1);
-            userDAO.create(user2);
+            // Crear usuario "Sergio"
+            User user1 = userDAO.findByName("Sergio");
+            if (user1 == null) {
+                user1 = new User("Sergio");
+                userDAO.create(user1);
+                System.out.println("Entidad creada: " + user1);
+            } else {
+                System.out.println("Entidad duplicada: " + user1);
+            }
+
+// Crear usuario "Imanol"
+            User user2 = userDAO.findByName("Imanol");
+            if (user2 == null) {
+                user2 = new User("Imanol");
+                userDAO.create(user2);
+                System.out.println("Entidad creada: " + user2);
+            } else {
+                System.out.println("Entidad duplicada: " + user2);
+            }
 
             System.out.println("Usuarios creados:");
 

@@ -1,38 +1,41 @@
+# Directorios de construcción
 target/
-!.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
+build/
 
-### IntelliJ IDEA ###
-.idea/modules.xml
-.idea/jarRepositories.xml
-.idea/compiler.xml
-.idea/libraries/
+# Archivos específicos de Maven
+!.mvn/wrapper/maven-wrapper.jar
+**/src/main/**/target/
+**/src/test/**/target/
+dependency-reduced-pom.xml
+
+# Archivos específicos de IntelliJ IDEA
+.idea/
 *.iws
 *.iml
 *.ipr
+out/
 
-### Eclipse ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
+# Configuraciones locales del IDE
+*.log
+*.tmp
+*.swp
+*.swo
 
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-build/
-!**/src/main/**/build/
-!**/src/test/**/build/
-
-### VS Code ###
-.vscode/
-
-### Mac OS ###
+# Configuración de SO (Windows/Mac/Linux)
 .DS_Store
+Thumbs.db
+*.~lock.*
+*~
+
+# Archivos de configuración específicos de entornos
+*.env
+*.env.local
+*.env.*
+*.config
+
+# Archivos de configuración sensibles
+application.properties
+application.yml
+
+# Archivos generados por el sistema
+hs_err_pid*

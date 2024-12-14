@@ -144,4 +144,16 @@ public class GenericDAOImpl <T,ID> implements GenericDAO<T,ID> {
         }
     }
 
+    public T findByName(String name) {
+        try (Session session = HibernateUtil.getSession()) {
+            String hql = "FROM " + entityType.getName() + " e WHERE e.name = :name";
+            Query<T> query = session.createQuery(hql, entityType);
+            query.setParameter("name", name);
+            return query.uniqueResult();
+        } catch (Exception e) {
+            throw new CustomException("Error al buscar entidad por nombre: " + name, e);
+        }
+    }
+
+
 }
