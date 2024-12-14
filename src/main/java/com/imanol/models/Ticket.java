@@ -9,16 +9,13 @@ import java.math.BigDecimal;
 @Entity
 @Table(name = "tickets")
 public class Ticket {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tickets_id_gen")
-    @SequenceGenerator(name = "tickets_id_gen", sequenceName = "tickets_id_seq", allocationSize = 1)
-    @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    // Relación Muchos a Uno con la clase "User"
     @ManyToOne(fetch = FetchType.LAZY)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @Column(name = "attraction_name", nullable = false, length = 100)
@@ -27,6 +24,18 @@ public class Ticket {
     @Column(name = "price", nullable = false, precision = 10, scale = 2)
     private BigDecimal price;
 
+    // Constructor sin argumentos
+    public Ticket() {
+    }
+
+    // Constructor con parámetros
+    public Ticket(User user, String attractionName, BigDecimal price) {
+        this.user = user;
+        this.attractionName = attractionName;
+        this.price = price;
+    }
+
+    // Getters y setters
     public Integer getId() {
         return id;
     }
@@ -58,5 +67,4 @@ public class Ticket {
     public void setPrice(BigDecimal price) {
         this.price = price;
     }
-
 }

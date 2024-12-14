@@ -1,6 +1,7 @@
 package com.imanol.dao.impl;
 
 import com.imanol.exceptions.CustomException;
+import com.imanol.exceptions.ExceptionHandler;
 import com.imanol.util.HibernateUtil;
 import com.imanol.dao.GenericDAO;
 import org.hibernate.Session;
@@ -30,6 +31,7 @@ public class GenericDAOImpl <T,ID> implements GenericDAO<T,ID> {
             HibernateUtil.closeSession(session);
         }
     }
+
 
 
     @Override
@@ -91,4 +93,21 @@ public class GenericDAOImpl <T,ID> implements GenericDAO<T,ID> {
             System.err.println("Error al eliminar la entidad: " + e.getMessage());
         }
     }
+
+    @Override
+    public void deleteById(ID id) {
+        try (Session session = HibernateUtil.getSession()) {
+            session.beginTransaction();
+            T entity = session.find(entityType, id); // Usa entityType aquí
+            if (entity != null) {
+                session.remove(entity);
+            } else {
+                throw new CustomException("No se encontró la entidad con ID: " + id);
+            }
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            throw new CustomException("Error al eliminar la entidad con ID: " + id, e);
+        }
+    }
+
 }

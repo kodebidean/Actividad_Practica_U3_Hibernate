@@ -7,6 +7,7 @@ import com.imanol.dao.impl.UserDAOImpl;
 import com.imanol.models.Ticket;
 import com.imanol.models.User;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public class Main {
@@ -29,9 +30,9 @@ public class Main {
             users.forEach(user -> System.out.println(user.getId() + ": " + user.getName()));
 
             // Crear tickets
-            Ticket ticket1 = new Ticket(user1, "Montaña Rusa", 10.50);
-            Ticket ticket2 = new Ticket(user1, "Casa del Terror", 5.75);
-            Ticket ticket3 = new Ticket(user2, "Carrusel", 3.25);
+            Ticket ticket1 = new Ticket(user1, "Montaña Rusa", BigDecimal.valueOf(10.50));
+            Ticket ticket2 = new Ticket(user1, "Casa del Terror", BigDecimal.valueOf(5.75));
+            Ticket ticket3 = new Ticket(user2, "Carrusel", BigDecimal.valueOf(3.25));
 
             ticketDAO.create(ticket1);
             ticketDAO.create(ticket2);
@@ -65,7 +66,7 @@ public class Main {
 
             // Eliminar un ticket
             System.out.println("\nEliminando el ticket 'Casa del Terror'...");
-            ticketDAO.delete(ticket2.getId());
+            ticketDAO.deleteById(ticket2.getId());
 
             System.out.println("\nTickets restantes:");
             tickets = ticketDAO.findAll();

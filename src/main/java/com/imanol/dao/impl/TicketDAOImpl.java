@@ -49,4 +49,6 @@ public class TicketDAOImpl extends GenericDAOImpl<Ticket, Integer> implements Ti
             throw new CustomException("Error al calcular el gasto medio del usuario con ID: " + userId, e);
         }
     }
+
+
 }

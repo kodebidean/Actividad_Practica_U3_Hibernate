@@ -2,6 +2,7 @@ package com.imanol.models;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -19,7 +20,16 @@ public class User {
 
     // Relación Uno a Muchos con la clase "Ticket"
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<Ticket> tickets; // Un usuario puede tener varias entradas
+    private List<Ticket> tickets = new ArrayList<>(); // Un usuario puede tener varias entradas
+
+    // Constructor sin argumentos (obligatorio para Hibernate)
+    public User() {
+    }
+
+    // Constructor con argumentos (opcional, útil para instanciar manualmente)
+    public User(String name) {
+        this.name = name;
+    }
 
     public Integer getId() {
         return id;

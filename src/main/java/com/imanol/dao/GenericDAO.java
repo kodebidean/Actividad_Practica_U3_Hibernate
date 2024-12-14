@@ -9,4 +9,5 @@ public interface GenericDAO <T,ID> {
     void create(T entity);          // Crear una nueva instancia
     void update(T entity);          // Actualizar una entidad
     void delete(T entity);          // Eliminar una entidad
+    void deleteById(ID id);         // Eliminar una entidad por el ID
 }

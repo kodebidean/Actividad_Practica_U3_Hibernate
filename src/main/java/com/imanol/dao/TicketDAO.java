@@ -1,7 +1,6 @@
 package com.imanol.dao;
 
 import com.imanol.models.Ticket;
-
 import java.util.List;
 
 public interface TicketDAO extends GenericDAO <Ticket, Integer> {
